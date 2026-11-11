@@ -1,0 +1,202 @@
+/* ===== متغیرها (رنگ و فونت از اسکرین‌شات مرجع، تقریبی) ===== */
+:root {
+  --font-main: Tahoma, "Segoe UI", sans-serif; /* فونت نهایی بعداً عوض می‌شود */
+  --color-primary: #2aa3a3;
+  --color-bg: #fafafa;
+  --color-surface: #ffffff;
+  --color-text: #333333;
+  --color-muted: #888888;
+  --color-gray: #eeeeee;
+  --color-border: #ececec;
+  --radius-pill: 999px;
+  --container-width: 1200px;
+}
+
+/* ===== پایه ===== */
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: var(--font-main);
+  background: var(--color-bg);
+  color: var(--color-text);
+  line-height: 1.7;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+a { color: inherit; text-decoration: none; }
+
+:focus-visible {
+  outline: 3px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.container {
+  width: 100%;
+  max-width: var(--container-width);
+  margin-inline: auto;
+  padding-inline: 16px;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px; height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.skip-link {
+  position: absolute;
+  top: -100px;
+  inset-inline-start: 8px;
+  background: var(--color-primary);
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: 8px;
+  z-index: 100;
+}
+.skip-link:focus { top: 8px; }
+
+/* ===== دکمه‌ها ===== */
+.btn {
+  display: inline-block;
+  border: 0;
+  border-radius: var(--radius-pill);
+  padding: 10px 20px;
+  font: inherit;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.btn-gray { background: var(--color-gray); }
+.btn-primary { background: var(--color-primary); color: #fff; }
+
+/* ===== هدر ===== */
+.site-header {
+  background: var(--color-surface);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+
+.header-top {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding-block: 12px;
+}
+
+.logo {
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: var(--color-primary);
+}
+
+.search-form { flex: 1; }
+
+.search-form input {
+  width: 100%;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: var(--color-gray);
+  padding: 12px 20px;
+  font: inherit;
+}
+
+.main-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+  padding-block: 8px 12px;
+}
+.main-nav a { padding: 4px 0; }
+.main-nav a:hover { color: var(--color-primary); }
+
+/* ===== محتوای اصلی ===== */
+main { flex: 1; padding-block: 24px; }
+.placeholder { color: var(--color-muted); }
+
+/* ===== فوتر ===== */
+.site-footer {
+  background: var(--color-surface);
+  border-top: 1px solid var(--color-border);
+  padding-block: 20px;
+  color: var(--color-muted);
+}
+.footer-inner {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+/* ===== موبایل ===== */
+@media (max-width: 600px) {
+  .header-top { flex-wrap: wrap; }
+  .search-form { order: 3; flex-basis: 100%; }
+  .btn-gray { margin-inline-start: auto; }
+}
+
+/* ===== کارت کتاب ===== */
+.book-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 16px;
+}
+
+.book-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  overflow: hidden;
+}
+.book-card:hover { box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1); }
+
+.book-card-link {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  height: 100%;
+  padding: 12px;
+}
+
+.book-cover {
+  aspect-ratio: 2 / 3;
+  background: var(--color-gray);
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+.book-cover img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.book-title {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.5;
+  /* حداکثر دو خط */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.book-author { margin: 0; font-size: 0.85rem; color: var(--color-muted); }
+.book-rating { margin: 0; font-size: 0.85rem; color: var(--color-muted); }
+.star { color: #f5a623; }
+
+.book-price,
+.badge-free {
+  margin-top: auto;           /* قیمت همیشه پایین کارت */
+  padding-top: 8px;
+  font-weight: bold;
+}
+.book-price { align-self: flex-start; }
+.badge-free {
+  align-self: flex-start;
+  color: var(--color-primary);
+}
