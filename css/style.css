@@ -200,3 +200,107 @@ main { flex: 1; padding-block: 24px; }
   align-self: flex-start;
   color: var(--color-primary);
 }
+
+/* ===== دکمه روشن (روی بنر) ===== */
+.btn-light { background: #fff; color: var(--color-primary); font-weight: bold; }
+
+/* ===== بنر ===== */
+.banner {
+  background: linear-gradient(135deg, var(--color-primary), #1b7a86);
+  color: #fff;
+  border-radius: 20px;
+  padding: 40px 32px;
+  margin-bottom: 32px;
+}
+.banner-title { margin: 0 0 8px; font-size: 1.8rem; line-height: 1.4; }
+.banner-text { margin: 0 0 20px; max-width: 560px; }
+
+/* ===== دسته‌ها ===== */
+.categories { margin-bottom: 32px; }
+.category-list {
+  list-style: none;
+  margin: 12px 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.category-chip {
+  display: inline-block;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  padding: 8px 20px;
+}
+.category-chip:hover { border-color: var(--color-primary); color: var(--color-primary); }
+
+/* ===== ردیف افقی ===== */
+.book-row { margin-bottom: 40px; }
+
+.row-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.row-title { margin: 0; font-size: 1.25rem; }
+.row-subtitle { margin: 0; color: var(--color-muted); font-size: 0.9rem; }
+.view-all { color: var(--color-primary); font-weight: bold; white-space: nowrap; }
+.view-all:hover { text-decoration: underline; }
+
+.row-wrapper { position: relative; }
+
+.row-track {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  padding-block: 4px 12px;
+  scrollbar-width: thin;
+}
+.row-track .book-card {
+  flex: 0 0 180px;
+}
+
+.row-btn {
+  position: absolute;
+  top: 40%;
+  transform: translateY(-50%);
+  z-index: 2;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--color-border);
+  border-radius: 50%;
+  background: var(--color-surface);
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+.row-btn:hover { background: var(--color-gray); }
+.row-btn-prev { right: -8px; }
+.row-btn-next { left: -8px; }
+
+@media (max-width: 600px) {
+  .banner { padding: 28px 20px; }
+  .banner-title { font-size: 1.4rem; }
+  .row-track .book-card { flex-basis: 150px; }
+  .row-btn { display: none; } /* در موبایل با کشیدن انگشت اسکرول می‌شود */
+}
+
+/* ===== علامت‌های جهت‌دار: در RTL آینه نشوند ===== */
+.chevron,
+.row-btn {
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+
+/* دکمه قبل/بعد وقتی اسکرول در آن جهت ممکن نیست پنهان می‌شود */
+.row-btn:disabled { visibility: hidden; }
+
+/* ===== صفحه فهرست و پیام‌ها ===== */
+.catalog-header { margin-bottom: 16px; }
+.catalog-title { margin: 0 0 4px; font-size: 1.5rem; }
+.result-count { margin: 0; color: var(--color-muted); }
+.message-box { text-align: center; padding-block: 48px; }
+.message-box .btn { margin-top: 12px; }

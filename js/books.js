@@ -91,7 +91,7 @@ const BOOKS = [
     category: "داستان و رمان",
     cover: "assets/images/covers/book-07.jpg",
     description: PLACEHOLDER_DESCRIPTION,
-    price: 95000,
+    price: 0,
     rating: 4.3,
     sample: []
   },
