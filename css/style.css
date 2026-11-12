@@ -304,3 +304,29 @@ main { flex: 1; padding-block: 24px; }
 .result-count { margin: 0; color: var(--color-muted); }
 .message-box { text-align: center; padding-block: 48px; }
 .message-box .btn { margin-top: 12px; }
+
+/* ===== نوار فیلتر ===== */
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 20px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  padding: 12px 16px;
+  margin-bottom: 20px;
+}
+.filter-field { display: flex; align-items: center; gap: 8px; }
+.filter-field select {
+  font: inherit;
+  padding: 8px 12px;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background: var(--color-surface);
+  color: inherit;
+}
+.filter-check { display: flex; align-items: center; gap: 6px; cursor: pointer; }
+.filter-check input { width: 18px; height: 18px; accent-color: var(--color-primary); }
+.clear-filters { color: var(--color-primary); font-weight: bold; }
+.clear-filters:hover { text-decoration: underline; }

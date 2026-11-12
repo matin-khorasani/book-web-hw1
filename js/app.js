@@ -184,21 +184,156 @@ function renderHome() {
   );
 }
 
+// ===== جستجو =====
+// یکسان‌سازی متن برای مقایسه: فاصله اول/آخر، حروف عربی، نیم‌فاصله، حروف لاتین
+function normalizeText(text) {
+  return text
+    .trim()
+    .toLowerCase()
+    .replace(/ي/g, "ی")
+    .replace(/ك/g, "ک")
+    .replace(/\u200c/g, "");
+}
+
+// کتاب‌هایی که عنوان یا نویسنده‌شان شامل عبارت است؛ عبارت خالی یعنی همه کتاب‌ها
+function searchBooks(books, query) {
+  const q = normalizeText(query);
+  if (q === "") return books;
+  return books.filter((book) =>
+    normalizeText(book.title).includes(q) || normalizeText(book.author).includes(q)
+  );
+}
+
+// ===== معیارهای فهرست (جستجو + فیلتر) =====
+// خواندن معیارها از آدرس؛ دسته نامعتبر نادیده گرفته می‌شود
+function readCatalogCriteria(params) {
+  const category = params.get("category");
+  return {
+    query: (params.get("q") || "").trim(),
+    category: CATEGORIES.includes(category) ? category : "",
+    freeOnly: params.get("free") === "1"
+  };
+}
+
+// فیلتر دسته و رایگان با هم (اشتراک شرط‌ها)
+function filterBooks(books, { category, freeOnly }) {
+  return books.filter((book) =>
+    (!category || book.category === category) &&
+    (!freeOnly || book.price === 0)
+  );
+}
+
+// نتیجه نهایی: ابتدا جستجو، بعد فیلتر
+function getCatalogBooks(criteria) {
+  return filterBooks(searchBooks(BOOKS, criteria.query), criteria);
+}
+
+function hasActiveCriteria(criteria) {
+  return criteria.query !== "" || criteria.category !== "" || criteria.freeOnly;
+}
+
+function hiddenInput(name, value) {
+  const input = document.createElement("input");
+  input.type = "hidden";
+  input.name = name;
+  input.value = value;
+  return input;
+}
+
+// جستجوی هدر باید فیلترهای فعلی را نگه دارد تا با هم ترکیب شوند
+function syncHeaderSearch(criteria) {
+  const form = document.querySelector(".search-form");
+  form.querySelectorAll("input[data-keep]").forEach((input) => input.remove());
+  const keep = { category: criteria.category, free: criteria.freeOnly ? "1" : "" };
+  Object.entries(keep).forEach(([name, value]) => {
+    if (!value) return;
+    const input = hiddenInput(name, value);
+    input.dataset.keep = "1";
+    form.append(input);
+  });
+}
+
+// نوار فیلتر: دسته، فقط رایگان، دکمه اعمال، پاک کردن
+function createFilterBar(criteria) {
+  const form = el("form", "filter-bar");
+  form.method = "get";
+  form.action = "index.html";
+  form.setAttribute("aria-label", "فیلتر کتاب‌ها");
+  form.append(hiddenInput("view", "catalog"));
+  if (criteria.query) form.append(hiddenInput("q", criteria.query));
+
+  // دسته‌بندی
+  const field = el("div", "filter-field");
+  const label = el("label", "", "دسته‌بندی");
+  label.htmlFor = "filter-category";
+  const select = el("select");
+  select.id = "filter-category";
+  select.name = "category";
+  const all = el("option", "", "همه دسته‌ها");
+  all.value = "";
+  select.append(all);
+  CATEGORIES.forEach((name) => {
+    const option = el("option", "", name);
+    option.value = name;
+    select.append(option);
+  });
+  select.value = criteria.category;
+  field.append(label, select);
+
+  // فقط رایگان
+  const check = el("label", "filter-check");
+  const checkbox = document.createElement("input");
+  checkbox.type = "checkbox";
+  checkbox.name = "free";
+  checkbox.value = "1";
+  checkbox.checked = criteria.freeOnly;
+  check.append(checkbox, el("span", "", "فقط کتاب‌های رایگان"));
+
+  const apply = el("button", "btn btn-primary", "اعمال");
+  apply.type = "submit";
+
+  form.append(field, check, apply);
+
+  if (hasActiveCriteria(criteria)) {
+    const clear = el("a", "clear-filters", "پاک کردن همه فیلترها");
+    clear.href = catalogUrl();
+    form.append(clear);
+  }
+  return form;
+}
+
 // ===== صفحه فهرست =====
 function renderCatalog(params) {
+  const criteria = readCatalogCriteria(params);
+  const books = getCatalogBooks(criteria);
+
   document.title = "فهرست کتاب‌ها | کتاب‌سرا";
-  const books = BOOKS; // جستجو و فیلتر در قدم‌های بعد
+  document.getElementById("search-input").value = criteria.query; // عبارت جستجو در هدر بماند
+  syncHeaderSearch(criteria);
 
   const header = el("div", "catalog-header");
+  const countText = formatNumber(books.length) + " کتاب";
   header.append(
-    el("h1", "catalog-title", "فهرست کتاب‌ها"),
-    el("p", "result-count", formatNumber(books.length) + " کتاب")
+    el("h1", "catalog-title", criteria.query ? "نتایج جستجو" : "فهرست کتاب‌ها"),
+    el("p", "result-count", criteria.query ? countText + " برای «" + criteria.query + "»" : countText)
   );
+
+  const filterBar = createFilterBar(criteria);
+  const app = document.getElementById("app");
+
+  if (books.length === 0) {
+    const empty = el("div", "message-box");
+    empty.append(el("p", "", "کتابی با این شرایط پیدا نشد."));
+    const back = el("a", "btn btn-primary", "نمایش همه کتاب‌ها");
+    back.href = catalogUrl();
+    empty.append(back);
+    app.replaceChildren(header, filterBar, empty);
+    return;
+  }
 
   const grid = el("div", "book-grid");
   books.forEach((book) => grid.append(createBookCard(book)));
-
-  document.getElementById("app").replaceChildren(header, grid);
+  app.replaceChildren(header, filterBar, grid);
 }
 
 // ===== نماهایی که هنوز ساخته نشده‌اند =====
