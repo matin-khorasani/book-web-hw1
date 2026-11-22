@@ -66,3 +66,10 @@ function getCatalogBooks(criteria) {
 function hasActiveCriteria(criteria) {
   return criteria.query !== "" || criteria.category !== "" || criteria.freeOnly || criteria.sort !== "";
 }
+
+// کتاب‌های هم‌دسته با کتاب داده‌شده (خود کتاب حذف می‌شود)، حداکثر count تا
+function getRelatedBooks(book, count) {
+  return BOOKS
+    .filter((other) => other.category === book.category && other.id !== book.id)
+    .slice(0, count);
+}
