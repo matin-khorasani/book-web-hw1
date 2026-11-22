@@ -24,7 +24,7 @@ function createBreadcrumb(book) {
   return nav;
 }
 
-// دکمه‌های کارت خرید. رفتار دکمه‌های data-action در قدم‌های بعد (State) وصل می‌شود.
+// کارت خرید: قیمت، دریافت/خرید، علاقه‌مندی، نمونه
 function createBuyCard(book) {
   const card = el("aside", "buy-card");
   card.setAttribute("aria-label", "خرید و دریافت");
@@ -37,20 +37,7 @@ function createBuyCard(book) {
     priceBox.append("قیمت: ", el("strong", "", formatNumber(book.price)), " تومان");
   }
 
-  // دریافت / خرید
-  const acquire = el("button", "btn btn-primary btn-block",
-    book.price === 0 ? "دریافت رایگان کتاب" : "خرید کتاب");
-  acquire.type = "button";
-  acquire.dataset.action = "acquire";
-  acquire.dataset.bookId = book.id;
-
-  // علاقه‌مندی
-  const favorite = el("button", "btn btn-outline btn-block", "افزودن به علاقه‌مندی‌ها");
-  favorite.type = "button";
-  favorite.dataset.action = "favorite";
-  favorite.dataset.bookId = book.id;
-
-  card.append(priceBox, acquire, favorite);
+  card.append(priceBox, createAcquireButton(book), createFavoriteButton(book, "detail"));
 
   // نمونه: اگر نبود، کنترل غیرفعال همراه با توضیح
   if (book.sample.length > 0) {

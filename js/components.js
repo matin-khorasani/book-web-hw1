@@ -32,7 +32,7 @@ function createBookCard(book) {
     : el("span", "book-price", formatNumber(book.price) + " ت");
 
   link.append(coverBox, title, author, rating, price);
-  card.append(link);
+  card.append(link, createFavoriteButton(book, "card"));
   return card;
 }
 

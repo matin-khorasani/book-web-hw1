@@ -6,4 +6,6 @@ registerRoute("book", renderBookDetail);
 ["library", "reader", "login"].forEach((v) => registerRoute(v, renderComingSoon));
 registerRoute("notFound", renderNotFound);
 
+subscribeState(syncStateUi); // هر تغییر وضعیت، همه دکمه‌ها را هماهنگ می‌کند
+
 renderRoute();
