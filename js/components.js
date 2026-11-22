@@ -129,7 +129,7 @@ function createCategories() {
 function syncHeaderSearch(criteria) {
   const form = document.querySelector(".search-form");
   form.querySelectorAll("input[data-keep]").forEach((input) => input.remove());
-  const keep = { category: criteria.category, free: criteria.freeOnly ? "1" : "" };
+  const keep = { category: criteria.category, free: criteria.freeOnly ? "1" : "", sort: criteria.sort };
   Object.entries(keep).forEach(([name, value]) => {
     if (!value) return;
     const input = hiddenInput(name, value);
@@ -138,7 +138,7 @@ function syncHeaderSearch(criteria) {
   });
 }
 
-// نوار فیلتر: دسته، فقط رایگان، دکمه اعمال، پاک کردن
+// نوار فیلتر: دسته، فقط رایگان، مرتب‌سازی، دکمه اعمال، پاک کردن
 function createFilterBar(criteria) {
   const form = el("form", "filter-bar");
   form.method = "get";
@@ -174,10 +174,28 @@ function createFilterBar(criteria) {
   checkbox.checked = criteria.freeOnly;
   check.append(checkbox, el("span", "", "فقط کتاب‌های رایگان"));
 
+  // مرتب‌سازی
+  const sortField = el("div", "filter-field");
+  const sortLabel = el("label", "", "مرتب‌سازی");
+  sortLabel.htmlFor = "filter-sort";
+  const sortSelect = el("select");
+  sortSelect.id = "filter-sort";
+  sortSelect.name = "sort";
+  const defaultSort = el("option", "", "پیش‌فرض");
+  defaultSort.value = "";
+  sortSelect.append(defaultSort);
+  SORT_OPTIONS.forEach(({ value, label: text }) => {
+    const option = el("option", "", text);
+    option.value = value;
+    sortSelect.append(option);
+  });
+  sortSelect.value = criteria.sort;
+  sortField.append(sortLabel, sortSelect);
+
   const apply = el("button", "btn btn-primary", "اعمال");
   apply.type = "submit";
 
-  form.append(field, check, apply);
+  form.append(field, check, sortField, apply);
 
   if (hasActiveCriteria(criteria)) {
     const clear = el("a", "clear-filters", "پاک کردن همه فیلترها");

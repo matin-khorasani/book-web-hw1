@@ -20,13 +20,22 @@ function searchBooks(books, query) {
   );
 }
 
-// خواندن معیارها از آدرس؛ دسته نامعتبر نادیده گرفته می‌شود
+// حالت‌های مرتب‌سازی؛ value همان مقدار پارامتر sort در آدرس است
+const SORT_OPTIONS = [
+  { value: "price-asc", label: "قیمت: کم به زیاد" },
+  { value: "price-desc", label: "قیمت: زیاد به کم" },
+  { value: "rating", label: "امتیاز: بیشترین" }
+];
+
+// خواندن معیارها از آدرس؛ دسته و مرتب‌سازی نامعتبر نادیده گرفته می‌شوند
 function readCatalogCriteria(params) {
   const category = params.get("category");
+  const sort = params.get("sort");
   return {
     query: (params.get("q") || "").trim(),
     category: CATEGORIES.includes(category) ? category : "",
-    freeOnly: params.get("free") === "1"
+    freeOnly: params.get("free") === "1",
+    sort: SORT_OPTIONS.some((option) => option.value === sort) ? sort : ""
   };
 }
 
@@ -38,11 +47,22 @@ function filterBooks(books, { category, freeOnly }) {
   );
 }
 
-// نتیجه نهایی: ابتدا جستجو، بعد فیلتر
+// مرتب‌سازی روی یک کپی (آرایه اصلی تغییر نمی‌کند)؛ sort پایدار است،
+// پس کتاب‌های هم‌ارزش ترتیب اولیه‌شان را حفظ می‌کنند
+function sortBooks(books, sort) {
+  const sorted = [...books];
+  if (sort === "price-asc") sorted.sort((a, b) => a.price - b.price);
+  else if (sort === "price-desc") sorted.sort((a, b) => b.price - a.price);
+  else if (sort === "rating") sorted.sort((a, b) => b.rating - a.rating);
+  return sorted;
+}
+
+// نتیجه نهایی: ابتدا جستجو، بعد فیلتر، در آخر مرتب‌سازی
 function getCatalogBooks(criteria) {
-  return filterBooks(searchBooks(BOOKS, criteria.query), criteria);
+  const found = filterBooks(searchBooks(BOOKS, criteria.query), criteria);
+  return sortBooks(found, criteria.sort);
 }
 
 function hasActiveCriteria(criteria) {
-  return criteria.query !== "" || criteria.category !== "" || criteria.freeOnly;
+  return criteria.query !== "" || criteria.category !== "" || criteria.freeOnly || criteria.sort !== "";
 }
