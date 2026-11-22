@@ -32,3 +32,11 @@ function catalogUrl(params) {
   const query = new URLSearchParams({ view: "catalog", ...params });
   return "?" + query.toString();
 }
+
+// تبدیل ارقام فارسی (۰-۹) و عربی (٠-٩) به لاتین: "۰۹۱۲" -> "0912"
+function normalizeDigits(text) {
+  return text.replace(/[\u06F0-\u06F9\u0660-\u0669]/g, (ch) => {
+    const code = ch.charCodeAt(0);
+    return String(code >= 0x06f0 ? code - 0x06f0 : code - 0x0660);
+  });
+}

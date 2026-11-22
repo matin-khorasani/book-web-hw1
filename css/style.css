@@ -134,7 +134,7 @@ main { flex: 1; padding-block: 24px; }
 @media (max-width: 600px) {
   .header-top { flex-wrap: wrap; }
   .search-form { order: 3; flex-basis: 100%; }
-  .btn-gray { margin-inline-start: auto; }
+  .account-area { margin-inline-start: auto; }
 }
 
 /* ===== کارت کتاب ===== */
@@ -445,3 +445,116 @@ main { flex: 1; padding-block: 24px; }
 .purchase-dialog h2 { margin: 0 0 12px; }
 .purchase-note { color: var(--color-muted); font-size: 0.9rem; }
 .dialog-actions { display: flex; gap: 12px; margin-top: 16px; }
+
+/* ===== حساب در سربرگ ===== */
+.account-area { display: flex; align-items: center; gap: 12px; }
+.account-name {
+  max-width: 160px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ===== فرم ورود ===== */
+.login-box {
+  max-width: 420px;
+  margin: 24px auto;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  padding: 24px;
+}
+.form-field { margin-bottom: 16px; }
+.form-field label { display: block; margin-bottom: 6px; font-weight: bold; }
+.form-field input {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid #cccccc;
+  border-radius: 12px;
+  font: inherit;
+  background: var(--color-surface);
+  color: inherit;
+}
+.form-field input[aria-invalid="true"] { border-color: #d93025; }
+.field-error { margin: 6px 0 0; color: #d93025; font-size: 0.9rem; }
+.field-error:empty { display: none; }
+.form-note { color: var(--color-muted); font-size: 0.9rem; }
+
+/* ===== کتابخانه ===== */
+.library-section { margin-bottom: 40px; }
+.library-section h2 { margin: 0 0 4px; }
+.section-count { margin: 0 0 12px; color: var(--color-muted); font-size: 0.9rem; }
+.library-item { display: flex; flex-direction: column; gap: 8px; }
+.empty-note {
+  background: var(--color-surface);
+  border: 1px dashed #cccccc;
+  border-radius: 16px;
+  padding: 24px;
+  text-align: center;
+  color: var(--color-muted);
+}
+.empty-note p { margin: 0 0 12px; }
+
+/* ===== نمونه‌خوان ===== */
+.reader {
+  --reader-bg: #ffffff;
+  --reader-text: #222222;
+  --reader-muted: #666666;
+  --reader-border: #e3e3e3;
+  --reader-btn-bg: #f2f2f2;
+  background: var(--reader-bg);
+  color: var(--reader-text);
+  border: 1px solid var(--reader-border);
+  border-radius: 16px;
+  padding: 20px;
+  max-width: 800px;
+  margin-inline: auto;
+}
+.reader[data-theme="dark"] {
+  --reader-bg: #1b1b1f;
+  --reader-text: #ececec;
+  --reader-muted: #a8a8b0;
+  --reader-border: #3a3a42;
+  --reader-btn-bg: #2c2c33;
+}
+
+.reader-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 24px;
+  padding-bottom: 16px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--reader-border);
+}
+.reader-exit { color: var(--color-primary); font-weight: bold; }
+.reader-exit:hover { text-decoration: underline; }
+.reader-group { display: flex; align-items: center; gap: 6px; }
+.reader-group-label { color: var(--reader-muted); margin-inline-end: 4px; }
+.reader-btn {
+  border: 1px solid var(--reader-border);
+  background: var(--reader-btn-bg);
+  color: var(--reader-text);
+  border-radius: var(--radius-pill);
+  padding: 6px 14px;
+  font: inherit;
+  cursor: pointer;
+}
+.reader-btn[aria-pressed="true"] {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: #ffffff;
+}
+
+.reader-title { margin: 0 0 4px; font-size: 1.5rem; }
+.reader-author { margin: 0 0 20px; color: var(--reader-muted); }
+
+.reader-text { line-height: 2.1; }
+.reader-text p { margin: 0 0 1.2em; }
+.reader[data-font-size="small"] .reader-text { font-size: 1rem; }
+.reader[data-font-size="medium"] .reader-text { font-size: 1.25rem; }
+.reader[data-font-size="large"] .reader-text { font-size: 1.6rem; }
+
+@media (max-width: 600px) {
+  .reader { padding: 16px; border-radius: 12px; }
+}

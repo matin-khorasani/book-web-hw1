@@ -64,15 +64,6 @@ function renderCatalog(params) {
   app.replaceChildren(header, filterBar, grid);
 }
 
-function renderComingSoon() {
-  const box = el("div", "message-box");
-  box.append(el("h1", "catalog-title", "این بخش به‌زودی ساخته می‌شود"));
-  const back = el("a", "btn btn-primary", "بازگشت به صفحه اصلی");
-  back.href = "index.html";
-  box.append(back);
-  document.getElementById("app").replaceChildren(box);
-}
-
 function renderNotFound() {
   document.title = "صفحه پیدا نشد | کتاب‌سرا";
   const box = el("div", "message-box");

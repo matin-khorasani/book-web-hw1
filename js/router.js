@@ -20,3 +20,10 @@ function renderRoute() {
   handler(params);
   window.scrollTo(0, 0);
 }
+
+// نمای فعلی را دوباره می‌سازد، بدون پرش به بالای صفحه (برای به‌روزرسانی بعد از تغییر State)
+function refreshRoute() {
+  const { view, params } = getRoute();
+  const handler = ROUTES[view] || ROUTES.notFound;
+  handler(params);
+}

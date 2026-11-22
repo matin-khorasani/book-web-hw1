@@ -16,6 +16,13 @@ function showStatus(message, link) {
   statusTimer = setTimeout(() => box.replaceChildren(), 8000);
 }
 
+// لینک ورود که بعد از ورود به همین صفحه برمی‌گردد
+function loginLink() {
+  const here = window.location.search;
+  const next = here ? "&next=" + encodeURIComponent(here) : "";
+  return { text: "ورود به حساب", href: "?view=login" + next };
+}
+
 // ===== علاقه‌مندی =====
 // variant: "card" (آیکون روی کارت) یا "detail" (دکمه متنی در صفحه جزئیات)
 function createFavoriteButton(book, variant) {
@@ -68,7 +75,7 @@ function handleAcquire(bookId, opener) {
     return;
   }
   if (!isLoggedIn()) {
-    showStatus("برای دریافت کتاب ابتدا وارد شوید.", { text: "ورود به حساب", href: "?view=login" });
+    showStatus("برای دریافت کتاب ابتدا وارد شوید.", loginLink());
     return;
   }
   if (book.price === 0) completeAcquire(book);
@@ -83,7 +90,7 @@ function completeAcquire(book) {
   } else if (result === "already-owned") {
     showStatus("این کتاب از قبل در کتابخانه شماست.");
   } else if (result === "not-logged-in") {
-    showStatus("برای دریافت کتاب ابتدا وارد شوید.", { text: "ورود به حساب", href: "?view=login" });
+    showStatus("برای دریافت کتاب ابتدا وارد شوید.", loginLink());
   }
 }
 
