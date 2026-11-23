@@ -1,11 +1,27 @@
+/* ===== فونت محلی: ایران‌سنس (فایل‌ها در assets/fonts) ===== */
+@font-face {
+  font-family: "IRANSans";
+  src: url("../assets/fonts/IRANSans-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "IRANSans";
+  src: url("../assets/fonts/IRANSans-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* ===== متغیرها (رنگ و فونت از اسکرین‌شات مرجع، تقریبی) ===== */
 :root {
-  --font-main: Tahoma, "Segoe UI", sans-serif; /* فونت نهایی بعداً عوض می‌شود */
-  --color-primary: #2aa3a3;
+  --font-main: "IRANSans", Tahoma, "Segoe UI", sans-serif; /* اگر فایل فونت نبود، Tahoma استفاده می‌شود */
+  --color-primary: #1b7f86; /* کمی تیره‌تر از طاقچه تا کنتراست با سفید ≥ ۴٫۵ باشد */
   --color-bg: #fafafa;
   --color-surface: #ffffff;
   --color-text: #333333;
-  --color-muted: #888888;
+  --color-muted: #6b6b6b;
   --color-gray: #eeeeee;
   --color-border: #ececec;
   --radius-pill: 999px;
@@ -206,7 +222,7 @@ main { flex: 1; padding-block: 24px; }
 
 /* ===== بنر ===== */
 .banner {
-  background: linear-gradient(135deg, var(--color-primary), #1b7a86);
+  background: linear-gradient(135deg, var(--color-primary), #0f5a66);
   color: #fff;
   border-radius: 20px;
   padding: 40px 32px;
@@ -398,8 +414,8 @@ main { flex: 1; padding-block: 24px; }
   position: absolute;
   top: 20px;
   left: 20px;
-  width: 36px;
-  height: 36px;
+  width: 40px;
+  height: 40px;
   border: 0;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.92);
@@ -529,14 +545,14 @@ main { flex: 1; padding-block: 24px; }
 }
 .reader-exit { color: var(--color-primary); font-weight: bold; }
 .reader-exit:hover { text-decoration: underline; }
-.reader-group { display: flex; align-items: center; gap: 6px; }
+.reader-group { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
 .reader-group-label { color: var(--reader-muted); margin-inline-end: 4px; }
 .reader-btn {
   border: 1px solid var(--reader-border);
   background: var(--reader-btn-bg);
   color: var(--reader-text);
   border-radius: var(--radius-pill);
-  padding: 6px 14px;
+  padding: 8px 14px;
   font: inherit;
   cursor: pointer;
 }
@@ -557,4 +573,21 @@ main { flex: 1; padding-block: 24px; }
 
 @media (max-width: 600px) {
   .reader { padding: 16px; border-radius: 12px; }
+}
+
+/* ===== اصلاحات ریسپانسیو و دسترس‌پذیری ===== */
+main:focus { outline: none; } /* مقصد لینک «پرش به محتوا» */
+.search-form { min-width: 0; }
+
+/* عنوان‌ها و متن‌های بلند از کادر بیرون نزنند */
+.book-title,
+.detail-title,
+.reader-title,
+.reader-text p,
+.catalog-title { overflow-wrap: break-word; }
+
+@media (max-width: 600px) {
+  /* موبایل: فهرست دو ستونه به‌جای یک کارت بزرگ در هر ردیف */
+  .book-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  .account-name { max-width: 100px; }
 }

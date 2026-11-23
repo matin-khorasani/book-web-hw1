@@ -2,6 +2,22 @@
 // همه از روی داده ساخته می‌شوند و فقط عنصر DOM برمی‌گردانند.
 
 // ورودی: یک شیء از BOOKS. خروجی: عنصر <article> آماده درج در صفحه
+// امتیاز برای چشم و صفحه‌خوان: ستاره تزئینی است و متن مخفی «امتیاز … از ۵» خوانده می‌شود
+function createRatingNodes(value, showMax) {
+  const star = el("span", "star", "★");
+  star.setAttribute("aria-hidden", "true");
+  const max = showMax ? " از ۵" : "";
+  const nodes = [el("span", "visually-hidden", "امتیاز "), star, " " + formatRating(value) + max];
+  if (!showMax) nodes.push(el("span", "visually-hidden", " از ۵"));
+  return nodes;
+}
+
+// برای کاربرانی که «کاهش حرکت» را روشن کرده‌اند، اسکرول نرم خاموش است
+function rowScrollBehavior() {
+  const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  return reduce ? "auto" : "smooth";
+}
+
 function createBookCard(book) {
   const card = el("article", "book-card");
 
@@ -23,8 +39,7 @@ function createBookCard(book) {
 
   // امتیاز
   const rating = el("p", "book-rating");
-  rating.append(el("span", "star", "★"), " " + formatRating(book.rating));
-  rating.setAttribute("aria-label", "امتیاز " + formatRating(book.rating) + " از ۵");
+  rating.append(...createRatingNodes(book.rating, false));
 
   // قیمت یا برچسب رایگان
   const price = book.price === 0
@@ -78,8 +93,8 @@ function createBookRow({ title, subtitle, books, href }) {
 
   // در RTL ادامه محتوا سمت چپ است، پس «بعدی» به چپ اسکرول می‌کند
   const step = () => track.clientWidth * 0.8;
-  prev.addEventListener("click", () => track.scrollBy({ left: step(), behavior: "smooth" }));
-  next.addEventListener("click", () => track.scrollBy({ left: -step(), behavior: "smooth" }));
+  prev.addEventListener("click", () => track.scrollBy({ left: step(), behavior: rowScrollBehavior() }));
+  next.addEventListener("click", () => track.scrollBy({ left: -step(), behavior: rowScrollBehavior() }));
 
   // در RTL مقدار scrollLeft از صفر شروع و به سمت منفی می‌رود، پس قدر مطلق می‌گیریم
   const updateButtons = () => {

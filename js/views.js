@@ -61,7 +61,8 @@ function renderCatalog(params) {
 
   const grid = el("div", "book-grid");
   books.forEach((book) => grid.append(createBookCard(book)));
-  app.replaceChildren(header, filterBar, grid);
+  // عنوان مخفی تا سطح عنوان‌ها (h1 ← h2 ← h3 کارت‌ها) پرش نداشته باشد
+  app.replaceChildren(header, filterBar, el("h2", "visually-hidden", "کتاب‌های پیدا شده"), grid);
 }
 
 function renderNotFound() {

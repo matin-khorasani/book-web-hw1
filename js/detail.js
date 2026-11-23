@@ -79,7 +79,7 @@ function createBookDetail(book) {
   categoryLine.append("دسته‌بندی: ", categoryLink);
 
   const rating = el("p", "detail-rating");
-  rating.append(el("span", "star", "★"), " " + formatRating(book.rating) + " از ۵");
+  rating.append(...createRatingNodes(book.rating, true));
 
   info.append(
     el("h1", "detail-title", book.title),
